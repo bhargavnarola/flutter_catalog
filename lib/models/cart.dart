@@ -1,4 +1,7 @@
+import 'package:flutter_catalog/core/store.dart';
+
 import 'catalog.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class CartModel {
 
@@ -6,7 +9,7 @@ class CartModel {
   CatalogModel? _catalog;
 
   // Collection of IDS - store Ids of each time
-  final List<int> _itemIds = [];
+  final List<int?> _itemIds = [];
 
   //Get Catalog
   CatalogModel get catalog => _catalog!;
@@ -16,19 +19,28 @@ class CartModel {
     _catalog = newCatalog;
   }
 
-  List<Item> get items => _itemIds.map((id) => _catalog!.getByID(id)).toList();
+  List<Item> get items => _itemIds.map((id) => _catalog!.getByID(id!)).toList();
 
   num get totalPrice =>
       items.fold(0, (total, current) => total + current.price!);
 
-  // Add Item
-  void add(Item item) {
-    _itemIds.add(item.id!);
-  }
+  // // Add Item
+  // void add(Item item) {
+  //   _itemIds.add(item.id!);
+  // }
 
   // Remove Item
   void remove(Item item) {
     _itemIds.remove(item.id);
   }
+}
 
+class AddMutation extends VxMutation<MyStore> {
+  final Item? item;
+
+  AddMutation(this.item);
+  @override
+  perform(){
+    (store?.cart as CartModel)._itemIds.add(item?.id);
+  }
 }

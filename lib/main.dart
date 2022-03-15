@@ -11,11 +11,7 @@ import 'pages/cart_page.dart';
 
 
 void main() {
-  runApp(VxState(
-      store: MyStore(),
-      child: MyApp()
-  )
-  );
+  runApp(VxState(store: MyStore(), child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
